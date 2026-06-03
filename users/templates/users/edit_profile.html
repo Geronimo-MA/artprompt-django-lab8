@@ -1,0 +1,29 @@
+{% extends 'artprompt/base.html' %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-error">
+        {{ form.non_field_errors }}
+    </div>
+
+    {% for f in form %}
+        <p>
+            <label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}:</label><br>
+            {{ f }}
+        </p>
+        <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+
+    <p>
+        <button type="submit">Сохранить изменения</button>
+    </p>
+</form>
+
+<p>
+    <a href="{% url 'users:profile' %}">Назад в профиль</a>
+</p>
+{% endblock %}

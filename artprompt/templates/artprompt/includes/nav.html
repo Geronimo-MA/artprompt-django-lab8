@@ -1,0 +1,11 @@
+<nav>
+    <a href="/">Главная</a> |
+    <a href="/about/">О сайте</a> |
+    <a href="/categories/">Категории</a> |
+    {% if user.is_authenticated %}
+        <a href="{% url 'users:profile' %}">Профиль</a>
+    {% else %}
+        <a href="{% url 'users:login' %}">Войти</a> |
+        <a href="{% url 'users:register' %}">Регистрация</a>
+    {% endif %}
+</nav>

@@ -1,0 +1,28 @@
+{% extends "artprompt/base.html" %}
+
+{% block title %}{{ idea.title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ idea.title }}</h2>
+
+    {% if idea.photo %}
+        <p>
+            <img src="{{ idea.photo.url }}" alt="{{ idea.title }}" class="detail-image">
+        </p>
+    {% endif %}
+
+    <p><strong>ID:</strong> {{ idea.id }}</p>
+    <p><strong>Slug:</strong> {{ idea.slug }}</p>
+    <p><strong>Стиль:</strong> {{ idea.style }}</p>
+    <p><strong>Статус:</strong> {{ idea.get_status_display }}</p>
+    <p>{{ idea.content }}</p>
+
+    {% if get_params %}
+        <h3>GET-параметры</h3>
+        <ul>
+            {% for key, value in get_params.items %}
+                <li>{{ key }} = {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

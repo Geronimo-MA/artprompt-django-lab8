@@ -1,0 +1,1 @@
+﻿# artprompt-django-lab4

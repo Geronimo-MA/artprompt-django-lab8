@@ -1,0 +1,47 @@
+:root {
+    --primary: #2f6f88;
+    --secondary: #244c5e;
+    --accent: #f0c94b;
+    --link-fg: #2f6f88;
+    --link-hover-color: #1f4656;
+    --header-color: #ffffff;
+    --breadcrumbs-bg: #244c5e;
+}
+
+#header {
+    background: #2f6f88;
+    color: #ffffff;
+}
+
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited {
+    color: #f0c94b;
+    font-weight: 700;
+}
+
+div.breadcrumbs {
+    background: #244c5e;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: #2f6f88;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: #2f6f88;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+.submit-row input:hover,
+a.button:hover {
+    background: #244c5e;
+}

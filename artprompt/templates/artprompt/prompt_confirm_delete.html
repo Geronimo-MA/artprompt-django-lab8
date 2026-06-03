@@ -1,0 +1,47 @@
+{% extends "artprompt/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="artprompt-layout">
+
+    <aside class="artprompt-sidebar">
+        <div class="sidebar-block">
+            <h3>Категории</h3>
+            <ul>
+                <li><a href="{% url 'home' %}">Все категории</a></li>
+                {% for cat in db_categories %}
+                    <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h3>Теги</h3>
+            <ul>
+                {% for tag in tags %}
+                    <li><a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </aside>
+
+    <section class="artprompt-main">
+        <h2>{{ title }}</h2>
+
+        <p>Вы действительно хотите удалить арт-промпт:</p>
+        <p><strong>{{ post.title }}</strong></p>
+
+        {% if post.photo %}
+            <img src="{{ post.photo.url }}" alt="{{ post.title }}" class="prompt-image">
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить</button>
+            <a href="{% url 'idea_slug' post.slug %}">Отмена</a>
+        </form>
+    </section>
+
+</div>
+{% endblock %}

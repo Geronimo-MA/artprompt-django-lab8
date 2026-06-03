@@ -1,0 +1,16 @@
+{% extends "artprompt/base.html" %}
+
+{% block title %}Генерация идеи{% endblock %}
+
+{% block content %}
+    <h2>Генерация идеи (POST)</h2>
+
+    {% if generated %}
+        <p><strong>Идея сгенерирована 🎨</strong></p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Сгенерировать</button>
+        </form>
+    {% endif %}
+{% endblock %}

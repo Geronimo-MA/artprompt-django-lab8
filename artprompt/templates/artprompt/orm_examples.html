@@ -1,0 +1,99 @@
+{% extends "artprompt/base.html" %}
+{% load static %}
+{% load artprompt_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+
+<h3>Примеры выборок</h3>
+
+<ul>
+    <li>Первая запись: {{ first_prompt.title }}</li>
+    <li>Последняя запись: {{ last_prompt.title }}</li>
+    <li>Самая свежая запись: {{ latest_prompt.title }}</li>
+    <li>Самая старая запись: {{ earliest_prompt.title }}</li>
+</ul>
+
+<h3>Методы exists() и count()</h3>
+<p>Записи категории "nature" существуют? {{ nature_exists }}</p>
+<p>Количество записей категории "nature": {{ nature_count }}</p>
+
+<h3>Примеры класса Q</h3>
+<p>OR (style содержит 'sci' или title содержит 'лес'):</p>
+<ul>
+{% for p in q_examples %}
+    <li>{{ p.title }} — {{ p.style }}</li>
+{% endfor %}
+</ul>
+
+<p>AND (опубликованные и с категорией):</p>
+<ul>
+{% for p in q_and_examples %}
+    <li>{{ p.title }} — {{ p.style }}</li>
+{% endfor %}
+</ul>
+
+<p>НЕ пустой style:</p>
+<ul>
+{% for p in q_not_examples %}
+    <li>{{ p.title }} — {{ p.style }}</li>
+{% endfor %}
+</ul>
+
+<h3>Примеры класса F</h3>
+<ul>
+{% for p in f_examples %}
+    <li>{{ p.title }} — cat_id: {{ p.cat_id }}</li>
+{% endfor %}
+</ul>
+
+<h3>Примеры Value и вычисляемых полей</h3>
+<ul>
+{% for v in value_examples %}
+    <li>{{ v.title }} — {{ v.style }} — {{ v.source }}</li>
+{% endfor %}
+</ul>
+
+<ul>
+{% for v in full_info_examples %}
+    <li>{{ v.full_info }}</li>
+{% endfor %}
+</ul>
+
+<ul>
+{% for v in length_examples %}
+    <li>{{ v.title }} — длина: {{ v.title_length }}</li>
+{% endfor %}
+</ul>
+
+<h3>Агрегаты</h3>
+<p>Всего промптов: {{ aggregate_examples.total }}</p>
+<p>Средний ID: {{ aggregate_examples.avg_id }}</p>
+<p>Минимальный ID: {{ aggregate_examples.min_id }}</p>
+<p>Максимальный ID: {{ aggregate_examples.max_id }}</p>
+<p>Сумма ID: {{ aggregate_examples.sum_id }}</p>
+
+<h3>Группировка по категориям</h3>
+<ul>
+{% for cat in grouped_by_category %}
+    <li>{{ cat.name }} — {{ cat.total_prompts }} промптов</li>
+{% endfor %}
+</ul>
+
+<h3>Группировка по тегам</h3>
+<ul>
+{% for tag in grouped_by_tag %}
+    <li>{{ tag.tag }} — {{ tag.total_prompts }} промптов</li>
+{% endfor %}
+</ul>
+
+<h3>Выборка через values()</h3>
+<ul>
+{% for v in values_examples %}
+    <li>{{ v.title }} — {{ v.cat__name }} — {{ v.style }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

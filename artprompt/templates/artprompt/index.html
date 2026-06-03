@@ -1,0 +1,133 @@
+{% extends "artprompt/base.html" %}
+{% load static %}
+{% load artprompt_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="artprompt-layout">
+
+    <aside class="artprompt-sidebar">
+        <img src="{% static 'artprompt/images/palette.png' %}" alt="Палитра художника" class="sidebar-image">
+
+        <div class="sidebar-block">
+            <h3>Категории</h3>
+            <ul>
+                {% if cat_selected == 0 %}
+                    <li><strong>Все категории</strong></li>
+                {% else %}
+                    <li><a href="{% url 'home' %}">Все категории</a></li>
+                {% endif %}
+
+                {% for cat in db_categories %}
+                    {% if cat.id == cat_selected %}
+                        <li><strong>{{ cat.name }}</strong></li>
+                    {% else %}
+                        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h3>Теги</h3>
+            <ul>
+                {% for tag in tags %}
+                    {% if tag.id == selected_tag %}
+                        <li><strong>{{ tag.tag }}</strong></li>
+                    {% else %}
+                        <li><a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h3>Формы</h3>
+            <ul>
+                <li><a href="{% url 'add_plain' %}">Обычная форма</a></li>
+                <li><a href="{% url 'add_model' %}">ModelForm</a></li>
+                <li><a href="{% url 'upload_file' %}">Загрузка файла</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <section class="artprompt-main">
+        <h2>{{ title }}</h2>
+        <p>{{ description }}</p>
+        <p><strong>{% site_message %}</strong></p>
+
+        <h3>Опубликованные арт-промпты</h3>
+
+        {% if posts %}
+            <div class="prompt-cards">
+                {% for post in posts %}
+                    <article class="prompt-card">
+                        {% if post.photo %}
+                            <img src="{{ post.photo.url }}" alt="{{ post.title }}" class="prompt-image">
+                        {% else %}
+                            <div class="prompt-no-image">Нет изображения</div>
+                        {% endif %}
+
+                        <div class="prompt-info">
+                            <h4>{{ post.title }}</h4>
+
+                            <p><strong>Категория:</strong> {{ post.cat.name|default:"Не указана" }}</p>
+                            <p><strong>Стиль:</strong> {{ post.style|default:"Не указан" }}</p>
+
+                            <p><strong>Теги:</strong>
+                                {% if post.tags.exists %}
+                                    {% for tag in post.tags.all %}
+                                        <a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a>{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    нет тегов
+                                {% endif %}
+                            </p>
+
+                            <p>{{ post.content|truncatewords:15 }}</p>
+
+                            <div class="prompt-links">
+                                <a href="{% url 'idea_slug' post.slug %}">Открыть по slug</a>
+                                <a href="{% url 'idea_id' post.id %}">Открыть по id</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Опубликованных арт-промптов пока нет.</p>
+        {% endif %}
+                {% if page_obj.has_other_pages %}
+            <nav class="list-pages">
+                <ul class="pagination">
+
+                    {% if page_obj.has_previous %}
+                        <li class="page-num">
+                            <a href="?page={{ page_obj.previous_page_number }}">‹</a>
+                        </li>
+                    {% endif %}
+
+                    {% for p in paginator.page_range %}
+                        {% if page_obj.number == p %}
+                            <li class="page-num page-num-selected">{{ p }}</li>
+                        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                            <li class="page-num">
+                                <a href="?page={{ p }}">{{ p }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-num">
+                            <a href="?page={{ page_obj.next_page_number }}">›</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}
